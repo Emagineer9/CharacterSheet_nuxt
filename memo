@@ -1,0 +1,94 @@
+
+npm install -g firebase-tools
+
+Google へのログイン
+firebase login
+
+プロジェクトの開始
+このコマンドはアプリのルート ディレクトリから実行してください:
+firebase init
+
+準備ができたらウェブアプリをデプロイ
+静的ファイル（HTML、CSS、JS など）をアプリのデプロイ ディレクトリ（デフォルトは「public」）に配置します。
+続いて、アプリのルート ディレクトリで次のコマンドを実行します:
+firebase deploy
+
+
+,
+  create_system({ getters },data) {
+    console.log('保存')
+    firebase.firestore().collection(`systems`).add(data)
+  }
+
+    kari(){
+      var saveData = {
+        systemId: 'coc6',
+        skills: [
+          { skill_id: '', skill_name: '回避', skill_initial_point: 0, is_textbox: false },
+          { skill_id: '', skill_name: 'キック', skill_initial_point: 25, is_textbox: false },
+          { skill_id: '', skill_name: '組み付き', skill_initial_point: 25, is_textbox: false },
+          { skill_id: '', skill_name: 'こぶし（パンチ）', skill_initial_point: 50, is_textbox: false },
+          { skill_id: '', skill_name: '頭突き', skill_initial_point: 10, is_textbox: false },
+          { skill_id: '', skill_name: '投擲', skill_initial_point: 25, is_textbox: false },
+          { skill_id: '', skill_name: 'マーシャルアーツ', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '拳銃', skill_initial_point: 20, is_textbox: false },
+          { skill_id: '', skill_name: 'サブマシンガン', skill_initial_point: 15, is_textbox: false },
+          { skill_id: '', skill_name: 'ショットガン', skill_initial_point: 30, is_textbox: false },
+          { skill_id: '', skill_name: 'マシンガン', skill_initial_point: 15, is_textbox: false },
+          { skill_id: '', skill_name: 'ライフル', skill_initial_point: 25, is_textbox: false },
+          { skill_id: '', skill_name: '応急手当', skill_initial_point: 30, is_textbox: false },
+          { skill_id: '', skill_name: '鍵開け', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '隠す', skill_initial_point: 15, is_textbox: false },
+          { skill_id: '', skill_name: '隠れる', skill_initial_point: 10, is_textbox: false },
+          { skill_id: '', skill_name: '聞き耳', skill_initial_point: 25, is_textbox: false },
+          { skill_id: '', skill_name: '忍び歩き', skill_initial_point: 10, is_textbox: false },
+          { skill_id: '', skill_name: '写真術', skill_initial_point: 10, is_textbox: false },
+          { skill_id: '', skill_name: '精神分析', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '追跡', skill_initial_point: 10, is_textbox: false },
+          { skill_id: '', skill_name: '登攀', skill_initial_point: 40, is_textbox: false },
+          { skill_id: '', skill_name: '図書館', skill_initial_point: 25, is_textbox: false },
+          { skill_id: '', skill_name: '目星', skill_initial_point: 25, is_textbox: false },
+          { skill_id: '', skill_name: '運転', skill_initial_point: 20, is_textbox: true },
+          { skill_id: '', skill_name: '機械修理', skill_initial_point: 20, is_textbox: false },
+          { skill_id: '', skill_name: '重機械操作', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '乗馬', skill_initial_point: 5, is_textbox: false },
+          { skill_id: '', skill_name: '水泳', skill_initial_point: 25, is_textbox: false },
+          { skill_id: '', skill_name: '製作', skill_initial_point: 5, is_textbox: true },
+          { skill_id: '', skill_name: '操縦', skill_initial_point: 1, is_textbox: true },
+          { skill_id: '', skill_name: '跳躍', skill_initial_point: 25, is_textbox: false },
+          { skill_id: '', skill_name: '電気修理', skill_initial_point: 10, is_textbox: false },
+          { skill_id: '', skill_name: 'ナビゲート', skill_initial_point: 10, is_textbox: false },
+          { skill_id: '', skill_name: '変装', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '言いくるめ', skill_initial_point: 5, is_textbox: false },
+          { skill_id: '', skill_name: '信用', skill_initial_point: 15, is_textbox: false },
+          { skill_id: '', skill_name: '説得', skill_initial_point: 15, is_textbox: false },
+          { skill_id: '', skill_name: '値切り', skill_initial_point: 5, is_textbox: false },
+          { skill_id: '', skill_name: '母国語', skill_initial_point: 20, is_textbox: true },
+          { skill_id: '', skill_name: '医学', skill_initial_point: 5, is_textbox: false },
+          { skill_id: '', skill_name: 'オカルト', skill_initial_point: 5, is_textbox: false },
+          { skill_id: '', skill_name: '化学', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: 'クトゥルフ神話', skill_initial_point: 0, is_textbox: false },
+          { skill_id: '', skill_name: '芸術', skill_initial_point: 5, is_textbox: true },
+          { skill_id: '', skill_name: '経理', skill_initial_point: 10, is_textbox: false },
+          { skill_id: '', skill_name: '考古学', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: 'コンピューター', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '心理学', skill_initial_point: 5, is_textbox: false },
+          { skill_id: '', skill_name: '人類学', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '生物学', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '地質学', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '電子工学', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '天文学', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '博物学', skill_initial_point: 10, is_textbox: false },
+          { skill_id: '', skill_name: '物理学', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '法律', skill_initial_point: 5, is_textbox: false },
+          { skill_id: '', skill_name: '薬学', skill_initial_point: 1, is_textbox: false },
+          { skill_id: '', skill_name: '歴史', skill_initial_point: 20, is_textbox: false },
+        ]
+      }
+
+      this.$store.dispatch('user_info/create_system', saveData)
+    },
+
+
+fusecharat@gmail.com
+20fuse2@cHa761rat#5Nyo
