@@ -9,7 +9,8 @@
           <v-tab>変更履歴</v-tab>
           <v-tab>idです</v-tab>
           <v-tab-item>
-            <CocCharacter/>
+            <Loding v-if="isLoding"/>
+            <CocCharacter v-else/>
           </v-tab-item>
           <v-tab-item>
             <CocPersonalData/>
@@ -25,21 +26,29 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import axios from 'axios'
+import { mapGetters, mapActions } from 'vuex'
+
 import CocCharacter from '@/components/organisms/coc6_character.vue'
 import CocPersonalData from '@/components/organisms/coc_personal_data.vue'
+import Loding from '@/components/organisms/loding.vue'
+
 
 export default {
   data () {
       return {
         color: "#3E1900",
         innerWidth: 0,
+        characterId: '',
       }
   },
-  created() {
-    // キャラクターデータ取得
-    var characterId = this.$route.params.id;
-    this.fetch_coc6_character(characterId)
+  components: {
+    CocCharacter,
+    CocPersonalData,
+    Loding
+  },
+  computed: {
+    ...mapGetters('user_info', ['uid', 'isLoding'])
   },
   mounted() {
     this.calculateWindowWidth()
@@ -47,10 +56,6 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.calculateWindowWidth);
-  },
-  components: {
-    CocCharacter,
-    CocPersonalData,
   },
   methods: {
     is_vertical() {
@@ -66,10 +71,25 @@ export default {
         return 12
       }
     },
-    ...mapActions('user_info', [
+    ...mapActions('coc6_info', [
       'fetch_coc6_character',
+    ]),
+    ...mapActions('user_info', [
+      'set_auth',
     ])
-  }
+  },
+  created() {
+    try {
+      this.set_auth()
+      .then(() => {
+        this.characterId = this.$route.params.id;
+        const params = { characterId: this.characterId, uid: this.uid }
+        this.fetch_coc6_character(params)
+      })
+    }catch(e){
+      console.log(e)
+    }
+  },
 }
 
 </script>

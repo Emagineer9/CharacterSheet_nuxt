@@ -10,19 +10,24 @@
 </template>
 
 <script>
+import axios from 'axios'
 import { mapActions } from 'vuex'
 
 export default {
   created() {
-    this.create_auth_changed()
+    this.set_auth()
   },
   methods: {
-    login(){
-      this.$store.dispatch('user_info/google_login')
+    login() {
+      try{
+        this.$store.dispatch('user_info/google_login')
+      }catch(e){
+        console.log(e)
+      }
     },
     ...mapActions('user_info', [
       'logout',
-      'create_auth_changed'
+      'set_auth',
     ])
   }
 }

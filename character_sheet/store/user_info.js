@@ -9,7 +9,25 @@ export const state = () => ({
 })
 
 export const getters = {
-  uid: (state) => state.login_user ?  state.login_user.uid : ''
+  uid: (state) => state.login_user ?  state.login_user.uid : '',
+  isLoding: (state) => state.is_loading,
+}
+
+export const mutations = {
+  startRequest(state) {
+    state.is_loading = true
+  },
+  failRequest(state) {
+    state.is_loading = false
+  },
+  setLoginUser(state, user) {
+    const { uid, email, displayName } = user
+    state.login_user = { uid, email, displayName }
+    state.is_loading = false
+  },
+  deleteLoginUser(state) {
+    state.login_user = null
+  },
 }
 
 export const actions = {
@@ -32,13 +50,17 @@ export const actions = {
    * ユーザー情報をセットするイベント生成
    * @param {*} param0 context
    */
-  create_auth_changed({ commit }) {
-    firebase.auth().onAuthStateChanged(user => {
-      if(user) {
-        commit('setLoginUser', user)
-      } else {
-        commit('deleteLoginUser')
-      }
+  set_auth({ commit }) {
+    return new Promise((resolve, reject) => {
+      commit('startRequest')
+      firebase.auth().onAuthStateChanged(user => {
+        if(user) {
+          commit('setLoginUser', user)
+        } else {
+          commit('deleteLoginUser')
+        }
+        resolve()
+      })
     })
   },
 
@@ -51,35 +73,5 @@ export const actions = {
     if(getters.uid){
       firebase.firestore().collection(`users/${getters.uid}/character`).add(data)
     }
-  },
-
-  /**
-   * クトゥルフ神話TRPG第6版(CoC6)
-   * データ取得
-   * @param param0 context
-   * @param characterId キャラクターID
-   */
-  fetch_coc6_character({ getters, commit }, characterId){
-    firebase.firestore().collection(`users/${getters.uid}/character`).doc(characterId).get()
-    .then(snapshot => {
-      const getData = snapshot.data()
-      if(getData) {
-        console.log(getData)
-        commit('setDisplayCharacterData', getData)
-      }
-    })
-  }
-}
-
-export const mutations = {
-  setLoginUser(state, user) {
-    const { uid, email, displayName } = user
-    state.login_user = { uid, email, displayName }
-  },
-  deleteLoginUser(state) {
-    state.login_user = null
-  },
-  setDisplayCharacterData(state, data) {
-    state.display_character_data = data
   },
 }

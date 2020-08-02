@@ -15,7 +15,13 @@
           <!-- 基本情報 -->
           <v-row class="mx-3">
             <v-col cols="12">
-              <TextSmall v-model="personal_items.full_name" :label="'探索者名'" :required="false" :placeholder="''" @change="changeItem(item)" />
+              <TextSmall
+                v-model="this.characterData.personal_items.full_name"
+                :label="'探索者名'"
+                :required="false"
+                :placeholder="''"
+                @change="changeItem(item)"
+              />
             </v-col>
             <v-col cols="12">
               <TextSmall v-model="personal_items.job_name" :label="'職業'" :required="false" :placeholder="''" @change="changeItem(item)" />
@@ -350,6 +356,7 @@
 
 <script>
 import { mdiDelete } from '@mdi/js'
+import { mapGetters, mapActions } from 'vuex'
 import NumberText from '@/components/molecules/number_text.vue'
 import NumberTextSmall from '@/components/molecules/number_text_small.vue'
 import TextSmall from '@/components/molecules/text_small.vue'
@@ -359,67 +366,7 @@ export default {
     return {
       delete_icon: mdiDelete,
       is_editing: true,
-      ability_items: [
-        {
-          name: 'ability',
-          str: 0,
-          con: 0,
-          pow: 0,
-          dex: 0,
-          app: 0,
-          siz: 0,
-          int: 0,
-          edu: 0,
-          hp:  0,
-          mp:  0,
-          san: 0,
-          idea: 0,
-          luck: 0,
-          knowledge: 0
-        },
-        {
-          name: 'increase',
-          str: 0,
-          con: 0,
-          pow: 0,
-          dex: 0,
-          app: 0,
-          siz: 0,
-          int: 0,
-          edu: 0,
-          hp:  0,
-          mp:  0,
-          san: 0,
-          idea: 0,
-          luck: 0,
-          knowledge: 0
-        },
-        {
-          name: 'temporary_change',
-          str: 0,
-          con: 0,
-          pow: 0,
-          dex: 0,
-          app: 0,
-          siz: 0,
-          int: 0,
-          edu: 0,
-          hp:  0,
-          mp:  0,
-          san: 0,
-          idea: 0,
-          luck: 0,
-          knowledge: 0
-        },
-      ],
-      personal_items: {
-        full_name: '',
-        job_name: '',
-        degree: '', // 学位
-        graduate: '', // 出身
-        sexuality: '',
-        age: 0
-      },
+      editedIndex: -1,
       skill_headers: [
         {
           text: '技能',
@@ -434,49 +381,6 @@ export default {
         { text: 'その他', value: 'etc_point' },
         { text: '合計', value: 'skill_point' },
       ],
-      skill_items: [
-        {
-          skill_name: '回避',
-          skill_initial_point: 30,
-          job_point: 6,
-          interest_point: 24,
-          growth_point: 4.0,
-          etc_point: 1,
-        },
-        {
-          skill_name: 'キック',
-          skill_initial_point: 30,
-          job_point: 6.0,
-          interest_point: 24,
-          growth_point: 4.0,
-          etc_point: 1,
-        },
-        {
-          skill_name: '組み付き',
-          skill_initial_point: 30,
-          job_point: 6.0,
-          interest_point: 24,
-          growth_point: 4.0,
-          etc_point: 1,
-        },
-        {
-          skill_name: 'こぶし（パンチ）',
-          skill_initial_point: 30,
-          job_point: 6.0,
-          interest_point: 24,
-          growth_point: 4.0,
-          etc_point: 1,
-        },
-        {
-          skill_name: '頭突き',
-          skill_initial_point: 30,
-          job_point: 6.0,
-          interest_point: 24,
-          growth_point: 4.0,
-          etc_point: 1,
-        }
-      ],
-      editedIndex: -1,
       weapon_headers: [
         { text: '武器', value: 'weapon_name', align: 'start', sortable: false },
         { text: '％', value: 'weapon_hit_rate' },
@@ -488,30 +392,6 @@ export default {
         { text: '耐久力', value: 'weapon_durability' },
         { text: '', value: 'weapon_button' },
       ],
-      weapon_items: [
-        {
-          id: 1,
-          weapon_name: 'キック',
-          weapon_hit_rate: 25,
-          weapon_damage: '1D6 + db',
-          break_number: '',
-          weapon_range: 'タッチ',
-          number_of_attacks: 1,
-          weapon_capacity: '',
-          weapon_durability: '-'
-        },
-        {
-          id: 2,
-          weapon_name: '組みつき',
-          weapon_hit_rate: 25,
-          weapon_damage: '1D6 + db',
-          break_number: '',
-          weapon_range: 'タッチ',
-          number_of_attacks: 1,
-          weapon_capacity: '',
-          weapon_durability: '-'
-        },
-      ],
       belongings_headers: [
         { text: '名称', value: 'belongings_name', align: 'start', sortable: false },
         { text: '価格', value: 'belongings_price' },
@@ -519,42 +399,11 @@ export default {
         { text: '備考', value: 'belongings_remark' },
         { text: '', value: 'belongings_button' },
       ],
-      belongings_items: [
-        {
-          id: 1,
-          belongings_name: 'スマホ',
-          belongings_price: 50000,
-          belongings_number: 1,
-          belongings_remark: '1年前の機種。買い替えたい。'
-        },
-        {
-          id: 2,
-          belongings_name: '',
-          belongings_price: 0,
-          belongings_number: 0,
-          belongings_remark: ''
-        },
-        {
-          id: 3,
-          belongings_name: '',
-          belongings_price: 0,
-          belongings_number: 0,
-          belongings_remark: '',
-        },
-      ],
       artifacts_headers: [
         { text: '名称', value: 'artifacts_name', align: 'start', sortable: false },
         { text: '個数', value: 'artifacts_number' },
         { text: '備考', value: 'artifacts_remark' },
         { text: '', value: 'artifacts_button' },
-      ],
-      artifacts_items: [
-        {
-          id: 1,
-          artifacts_name: '',
-          artifacts_number: 0,
-          artifacts_remark: ''
-        },
       ],
     }
   },
@@ -564,7 +413,53 @@ export default {
     TextSmall
   },
   computed: {
+    personal_items: {
+      get(){
+        return this.characterData.personal_items
+      },
+      set(value){
 
+      },
+    },
+    ability_items: {
+      get(){
+        return this.characterData.ability_items
+      },
+      set(value){
+
+      },
+    },
+    skill_items: {
+      get(){
+        return this.characterData.skill_items
+      },
+      set(value){
+
+      },
+    },
+    weapon_items: {
+      get(){
+        return this.characterData.weapon_items
+      },
+      set(value){
+
+      },
+    },
+    belongings_items: {
+      get(){
+        return this.characterData.belongings_items
+      },
+      set(value){
+      },
+    },
+    artifacts_items: {
+      get(){
+        return this.characterData.artifacts_items
+      },
+      set(value){
+      },
+    },
+    ...mapGetters('coc6_info', ['characterData']),
   },
   methods: {
     submit() {
@@ -572,12 +467,12 @@ export default {
         this.success = true;
         var saveData = {
           systemId: 'coc6',
-          ability_items: this.ability_items,
-          personal_items: this.personal_items,
-          skill_items: this.skill_items,
-          weapon_items: this.weapon_items,
-          belongings_items: this.belongings_items,
-          artifacts_items: this.artifacts_items,
+          // ability_items: this.ability_items,
+          // personal_items: this.personal_items,
+          // skill_items: this.skill_items,
+          // weapon_items: this.weapon_items,
+          // belongings_items: this.belongings_items,
+          // artifacts_items: this.artifacts_items,
         }
         this.$store.dispatch('user_info/create_character', saveData)
       } else {
